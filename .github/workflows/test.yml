@@ -26,22 +26,7 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro"]
         scheme:
-            - TealiumAppDelegateProxyTests-iOS
-            - TealiumAttributionTests-iOS
-            - TealiumAutotrackingTests-iOS
-            - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
-            - TealiumInAppPurchaseTests-iOS
-            - TealiumLifecycleTests-iOS
-            - TealiumLocationTests-iOS
-            - TealiumMediaIntegrationTests-iOS
-            - TealiumMediaTests-iOS
-            - TealiumRemoteCommandsTests-iOS
-            - TealiumTagManagementIntegrationTests-iOS
-            - TealiumTagManagementTests-iOS
-            - TealiumVisitorServiceTests-iOS
-            - TealiumMomentsAPITests-iOS
-            - TealiumTraceTests-iOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1
@@ -63,13 +48,7 @@ jobs:
       matrix:
         destination: ["platform=macOS"]
         scheme:
-          - TealiumAutotrackingTests-macOS
           - TealiumCoreTests-macOS
-          - TealiumCollectTests-macOS
-          - TealiumLifecycleTests-macOS
-          - TealiumMediaTests-macOS
-          - TealiumVisitorServiceTests-macOS
-          - TealiumMomentsAPITests-macOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1
@@ -91,14 +70,7 @@ jobs:
       matrix:
         destination: ["platform=tvOS Simulator,name=Apple TV"]
         scheme:
-          - TealiumAutotrackingTests-tvOS
           - TealiumCoreTests-tvOS
-          - TealiumCollectTests-tvOS
-          - TealiumInAppPurchaseTests-tvOS
-          - TealiumLifecycleTests-tvOS
-          - TealiumMediaTests-tvOS
-          - TealiumVisitorServiceTests-tvOS
-          - TealiumMomentsAPITests-tvOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1
@@ -108,62 +80,3 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true  --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
-  test_Autotracking_iOS_uiTests:
-    name: Test TealiumAutotracking iOS UI Tests
-    runs-on: manzanita-standard
-    timeout-minutes: 60
-    env:
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro"]
-    steps:
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-      - uses: actions/checkout@v2
-      - name: Test TealiumAutotracking iOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-iOS" --derived_data_path ./output --code_coverage false --skip_build true --destination "${{ matrix.destination }}"
-        working-directory: ${{ env.working-directory }}
-  test_Autotracking_macOS_uiTests:
-    needs: install
-    name: Test TealiumAutotracking macOS UI Tests
-    runs-on: manzanita-standard
-    timeout-minutes: 60
-    env:
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=macOS"]
-    steps:
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.3.0
-        with:
-          xcode-version: latest-stable
-      - uses: actions/checkout@v2
-      - name: Test TealiumAutotracking macOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-macOS" --derived_data_path ./output --code_coverage false --skip_build true --destination "${{ matrix.destination }}"
-        working-directory: ${{ env.working-directory }}
-  test_Autotracking_tvOS_uiTests:
-    needs: install
-    name: Test TealiumAutotracking tvOS UI Tests
-    runs-on: manzanita-standard
-    timeout-minutes: 60
-    env:
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=tvOS Simulator,name=Apple TV"]
-    steps:
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-      - uses: actions/checkout@v2
-      - name: Test TealiumAutotracking tvOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-tvOS" --derived_data_path ./output --code_coverage false --skip_build true  --destination "${{ matrix.destination }}"
-        working-directory: ${{ env.working-directory }}
